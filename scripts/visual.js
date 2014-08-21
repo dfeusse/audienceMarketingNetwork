@@ -1,7 +1,7 @@
 //reorder code using this forum post
 // http://stackoverflow.com/questions/11102795/d3-node-labeling
 function roundToOneDecimal(number) {
-	return d3.round(number, 1)
+	return d3.round(number, 2)
 }
 var addComma = d3.format("0,000");
 
@@ -9,7 +9,8 @@ var tip = d3.tip()
     .attr('class', 'd3-tip')
     //.html(function(d) { return 'name: ' + '<span>' + d.name + '</span>' + '<br>' + '<span>' +'$'+ d.value + '</span>' + ' raised' + '<br>' + d.category })
     //.html(function(d) { return 'name: ' + '<span>' + d.name + '</span>' + '<br>' + 'mentions: ' + '<span>' + d.mentions + '</span>' + '<br>' + 'sentiment: ' + '<span>' + d.sentiment + '</span>' + '<br>' + 'passion: ' + '<span>' + d.passion + '</span>' + '<br>' + 'popularity: ' + '<span>' + d.shared + '</span>';})
-    .html(function(d) { return 'name: ' + '<span>' + d.name + '</span>' + '<br>' + 'affinity: ' + '<span>' + roundToOneDecimal(d.affinity) + '</span>' + '<br>' + 'topic audience: ' + '<span>' + d.topicAudience + '</span>' + '<br>' + 'general audience: ' + '<span>' + addComma(d.generalAudience) + '</span>'})// + '<br>' + 'popularity: ' + '<span>' + d.shared + '</span>';})
+    //.html(function(d) { return 'name: ' + '<span>' + d.name + '</span>' + '<br>' + 'affinity: ' + '<span>' + roundToOneDecimal(d.affinity) + '</span>' + '<br>' + 'topic audience: ' + '<span>' + d.topicAudience + '</span>' + '<br>' + 'general audience: ' + '<span>' + addComma(d.generalAudience) + '</span>'})// + '<br>' + 'popularity: ' + '<span>' + d.shared + '</span>';})
+	.html(function(d) { return 'name: ' + '<span>' + d.name + '</span>' + '<br>' + 'affinity: ' + '<span>' + roundToOneDecimal(d.affinity) + '</span>' + '<br>' + 'volume: ' + '<span>' + d.mentions + '</span>' + '<br>' + 'general audience: ' + '<span>' + addComma(d.generalAudience) + '</span>'})// + '<br>' + 'popularity: ' + '<span>' + d.shared + '</span>';})
     .offset([-12, 0]);
 
 var buttonBenchmarkAffinity = d3.select("#buttons")
@@ -165,6 +166,7 @@ d3.json(DATA, function(data) {
 			//generalAudience: d.term_general_audience,
 			//mentions: d.mentions,
 			//sentiment: d.sentiment,
+			mentions: d.volume,
 			sentiment: randSentiment(),
 			passion: randPassion(),
 			//passion: d.passion,
