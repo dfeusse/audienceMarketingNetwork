@@ -97,6 +97,7 @@ var nodes = [],
 	damper = 0.1;
 
 d3.json(DATA, function(originaldata) {
+	
 	console.log('DATA')
 	var data = originaldata.splice(0,100)
 	console.log(data)
@@ -111,11 +112,6 @@ d3.json(DATA, function(originaldata) {
 		.domain([d3.min(data, function(d) {return d.sentiment; }), d3.max(data, function(d) {return d.sentiment; }) ])
 		.range(["red", "green"]);
 	*/
-
-	var benchmarkPopularity = d3.scale.linear()
-		.domain([d3.min(data, function(d) {return d.index}), d3.max(data, function(d) {return d.index})])
-		//.range([0 + margin.left, width - margin.left - margin.right])
-		.range([0, width])
 
 	var padding = 6, // separation between nodes
     	maxRadius = 40;
@@ -193,9 +189,8 @@ d3.json(DATA, function(originaldata) {
 		};
 	}); //end of data.forEach
 	nodes.sort(function(a,b) {return b.value - a.value; });
-	console.log(nodes);
 
-	data = nodes.slice(0,10)
+	data = nodes;
 	console.log(data)
 
 	console.log('new new data')
@@ -205,7 +200,7 @@ d3.json(DATA, function(originaldata) {
         //.domain([d3.min(data, function(d) { return d.affinity; }), d3.max(data, function(d) { return d.affinity; })])
         .domain([d3.min(data, function(d) { return d.affinity;}), d3.max(data, function(d) { return d.affinity; })])
 	    .range([0, width]);
-	console.log(xScaleAffinity(1000))
+	
 
 	var xAxisAffinity = d3.svg.axis()
     	.orient("bottom")
@@ -219,21 +214,6 @@ d3.json(DATA, function(originaldata) {
     	.tickSize(-height, 0, 0)
 
    	// ------ x scales
-
-    var xScalePopularity = d3.scale.linear()
-        .domain([d3.min(data, function(d) { return d.shared; }), d3.max(data, function(d) { return d.shared; })])
-	    .range([ 0, width]);
-
-	var xAxisPopularity = d3.svg.axis()
-    	.orient("bottom")
-    	.scale(xScalePopularity);
-
-    var xAxisPopularityBenchmark = d3.svg.axis()
-    	.orient("bottom")
-    	.scale(xScalePopularity)
-    	.tickValues([0])
-    	.tickFormat("")
-    	.tickSize(-height, 0, 0);
 
     var xScaleSentiment = d3.scale.linear()
         .domain([d3.min(data, function(d) { return d.sentiment; }), d3.max(data, function(d) { return d.sentiment; })])
