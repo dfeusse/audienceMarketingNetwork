@@ -81,7 +81,7 @@ var strokeColor = d3.scale.ordinal()
 
 var margin = {top: 30, right: 100, bottom: 30, left: 300},
 	width = 1200 - margin.right - margin.left,
-	height = 500 - margin.top - margin.bottom;
+	height = 700 - margin.top - margin.bottom;
 
 var nodeCenter = {x: width/2, y: height/2};
 
@@ -99,9 +99,18 @@ var nodes = [],
 d3.json(DATA, function(originaldata) {
 	
 	console.log('DATA')
-	var data = originaldata.splice(0,100)
+	var data = originaldata.splice(0,51)
 	console.log(data)
-	console.log(data.length)
+	dataLength = data.length;
+	console.log(dataLength)
+
+	if (dataLength > 100) {
+		height = 550;
+	} else if (dataLength > 50) {
+		height = 450;
+	} else {
+		height = 400;
+	}
 
 	var radiusScale = d3.scale.linear()
 		.domain([d3.min(data, function(d) {return d.radius; }), d3.max(data, function(d) {return d.radius; }) ])
