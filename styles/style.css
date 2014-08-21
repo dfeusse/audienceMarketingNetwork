@@ -1,0 +1,60 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    /* color: #fff; */
+    /* color: #d71028; */
+    /* color: #8a8989; */
+    color: #c0c0c0;
+    border-radius: 2px;
+}
+
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
+
+.d3-tip span {
+    /* color: #ff00c7; */
+    /* color: #d71028; */
+    color: #fff;
+}
+
+.mynodes {
+    -webkit-transition: stroke-width .5s, stroke .5s; /* For Safari 3.1 to 6.0 */
+    transition: stroke-width .5s, stroke .5s;
+}
+.mynodes:hover {
+    /* fill-opacity: 0.7;*/
+    stroke-width:2px;
+    stroke:#6d6d6d;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+text {
+    font-size: 13px;
+}
