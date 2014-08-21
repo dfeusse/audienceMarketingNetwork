@@ -99,7 +99,7 @@ var nodes = [],
 d3.json(DATA, function(originaldata) {
 	
 	console.log('DATA')
-	var data = originaldata.splice(0,51)
+	var data = originaldata.splice(0,150)
 	console.log(data)
 	dataLength = data.length;
 	console.log(dataLength)
