@@ -10,7 +10,7 @@ var tip = d3.tip()
     //.html(function(d) { return 'name: ' + '<span>' + d.name + '</span>' + '<br>' + '<span>' +'$'+ d.value + '</span>' + ' raised' + '<br>' + d.category })
     //.html(function(d) { return 'name: ' + '<span>' + d.name + '</span>' + '<br>' + 'mentions: ' + '<span>' + d.mentions + '</span>' + '<br>' + 'sentiment: ' + '<span>' + d.sentiment + '</span>' + '<br>' + 'passion: ' + '<span>' + d.passion + '</span>' + '<br>' + 'popularity: ' + '<span>' + d.shared + '</span>';})
     //.html(function(d) { return 'name: ' + '<span>' + d.name + '</span>' + '<br>' + 'affinity: ' + '<span>' + roundToOneDecimal(d.affinity) + '</span>' + '<br>' + 'topic audience: ' + '<span>' + d.topicAudience + '</span>' + '<br>' + 'general audience: ' + '<span>' + addComma(d.generalAudience) + '</span>'})// + '<br>' + 'popularity: ' + '<span>' + d.shared + '</span>';})
-	.html(function(d) { return 'name: ' + '<span>' + d.name + '</span>' + '<br>' + 'affinity: ' + '<span>' + roundToOneDecimal(d.affinity) + '</span>' + '<br>' + 'volume: ' + '<span>' + d.mentions + '</span>' + '<br>' + 'general audience: ' + '<span>' + addComma(d.generalAudience) + '</span>'})// + '<br>' + 'popularity: ' + '<span>' + d.shared + '</span>';})
+	.html(function(d) { return 'name: ' + '<span>' + d.name + '</span>' + '<br>' + 'affinity: ' + '<span>' + roundToOneDecimal(d.affinity) + '</span>' + '<br>' + 'volume: ' + '<span>' + d.mentions + '</span>'})// + '<br>' + 'general audience: ' + '<span>' + addComma(d.generalAudience) + '</span>'})// + '<br>' + 'popularity: ' + '<span>' + d.shared + '</span>';})
     .offset([-12, 0]);
 
 var buttonBenchmarkAffinity = d3.select("#buttons")
@@ -96,9 +96,11 @@ svg.call(tip);
 var nodes = [],
 	damper = 0.1;
 
-d3.json(DATA, function(data) {
+d3.json(DATA, function(originaldata) {
 	console.log('DATA')
+	var data = originaldata.splice(0,100)
 	console.log(data)
+	console.log(data.length)
 
 	var radiusScale = d3.scale.linear()
 		.domain([d3.min(data, function(d) {return d.radius; }), d3.max(data, function(d) {return d.radius; }) ])
@@ -193,7 +195,8 @@ d3.json(DATA, function(data) {
 	nodes.sort(function(a,b) {return b.value - a.value; });
 	console.log(nodes);
 
-	data = nodes;
+	data = nodes.slice(0,10)
+	console.log(data)
 
 	console.log('new new data')
 	console.log(data)
