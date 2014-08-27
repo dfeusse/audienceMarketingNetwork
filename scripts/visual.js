@@ -79,8 +79,8 @@ var strokeColor = d3.scale.ordinal()
 	.range(['#8b0000','#de8637','#c4e8ba', '#004499']);
 */
 
-var margin = {top: 30, right: 100, bottom: 30, left: 300},
-	width = 1200 - margin.right - margin.left,
+var margin = {top: 30, right: 140, bottom: 30, left: 300},
+	width = 1300 - margin.right - margin.left,
 	height = 700 - margin.top - margin.bottom;
 
 var nodeCenter = {x: width/2, y: height/2};
@@ -99,7 +99,7 @@ var nodes = [],
 d3.json(DATA, function(originaldata) {
 	
 	console.log('DATA')
-	var data = originaldata.splice(0,150)
+	var data = originaldata.data.splice(0,150)
 	console.log(data)
 	dataLength = data.length;
 	console.log(dataLength)
@@ -519,6 +519,37 @@ d3.json(DATA, function(originaldata) {
 			})
 	}
 
+	//function addAffinityTitles(axisCalled, axisText) {
+	function addAffinityTitles() {
+		svg.append("g")
+    		.attr("class", "affinityLeftLabel")
+    		//.attr("transform", "translate(0," + height + ")")
+    		//.call(axisCalled)
+    	.append("text")
+	    	.attr("x", 10)
+	      	.attr("y", -16)
+	      	.attr("dy", ".71em")
+	      	.style("text-anchor", "end")
+	      	//.text(axisText);
+	      	.text(function(d) {
+	      		//console.log('OG OG DATAA')
+	      		console.log(originaldata.meta)
+	      		return originaldata.meta.leftLabel;
+	      	})
+
+	    svg.append("g")
+    		.attr("class", "affinityRightLabel")
+	    .append("text")
+	    	.attr("x", width)
+	      	.attr("y", -16)
+	      	.attr("dy", ".71em")
+	      	.style("text-anchor", "end")
+	      	//.text(axisText);
+	      	.text(function(d) {
+	      		return originaldata.meta.rightLabel;
+	      	})
+	}
+
 	function addMainAxis(axisCalled, axisText) {
 		svg.append("g")
     		.attr("class", "x axis")
@@ -543,14 +574,21 @@ d3.json(DATA, function(originaldata) {
 		svg.selectAll(".axis").remove();
 	}
 
+	function removeAffinityLabels() {
+		svg.selectAll(".affinityLeftLabel").remove();
+		svg.selectAll(".affinityRightLabel").remove();
+	}
+
 	// $$$$$$ BUTTONS
 	buttonBenchmarkAffinity
 		.on('click', function() {
 			removeAxis();
+			removeAffinityLabels();
 			nodeFillAffinity();
 			addMainAxis(xAxisAffinity, "Affinity");
 			addBenchmarklineAxis(xAxisAffinityBenchmark);
 	    	renderNodes(xScaleAffinity, 'affinity');
+	    	addAffinityTitles();
 	});
 
 
@@ -558,25 +596,31 @@ d3.json(DATA, function(originaldata) {
 	buttonSentiment
 		.on("click", function() {
 			removeAxis();
+			removeAffinityLabels()
 			nodeFillSentiment();
 			addMainAxis(xAxisSentiment, "Sentiment");
 			addBenchmarklineAxis(xAxisSentimentBenchmark);
-			renderNodes(xScaleSentiment, 'sentiment')
+			renderNodes(xScaleSentiment, 'sentiment');
+			addAffinityTitles();
 		});
 
 	buttonPassion
 		.on("click", function() {
 			removeAxis();
+			removeAffinityLabels();
 			nodeFillPassion();
 			addMainAxis(xAxisPassion, "Passion");
 			addBenchmarklineAxis(xAxisPassionBenchmark);
 			renderNodes(xScalePassion, 'passion');
+			addAffinityTitles();
 		})
 
 	buttonShowScatter
 		.on("click", function() {
 			removeAxis();
+			removeAffinityLabels();
 			nodeResetColor();
+			addAffinityTitles();
 			// may be better to put this code in functions
 			// actually. this could be great example to make it OOP
 			// make object, and then add properties instead of parameters in functions
@@ -708,6 +752,7 @@ buttonSentiment
 buttonShowAll
 	.on('click', function() {
 		removeAxis();
+		removeAffinityLabels();
 		nodeResetColor();
 		console.log('move nodes back to center');
 		renderNodes(xScaleAffinity, 'affinity', true);
