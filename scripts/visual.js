@@ -97,12 +97,52 @@ var nodes = [],
 	damper = 0.1;
 
 d3.json(DATA, function(originaldata) {
-	
 	console.log('DATA')
+
+	// Create index to select nodes
+	// --------------------------------------------------------------
+	var dataArray = originaldata.data;
+
+	// create absolute value of index for scaling
+	for(var i=0; i < dataArray.length; i++) {
+		dataArray[i].absValIndex = Math.abs(dataArray[i].index)
+	}
+	
+	var volumeWeight = 0.5;
+	var indexWeight = 0.5;
+	
+	var volumeScale = d3.scale.linear()
+		.domain([ 0, d3.max(dataArray, function(d) {return d.volume}) ])
+		.range([ 0, volumeWeight ]);
+	
+	var indexScale = d3.scale.linear()
+		.domain([ 0, d3.max(dataArray, function(d) {return d.absValIndex}) ])
+		.range([ 0, indexWeight ]);
+
+	for(var i=0; i < dataArray.length; i++) {
+		dataArray[i].weightedImpIndex = indexScale(dataArray[i].absValIndex) + volumeScale(dataArray[i].volume);
+		//console.log(dataArray[i])
+	}
+
+	// sanity check, max should not exceed 1, min should not be below 0
+	console.log('MAX MAX')
+	console.log(d3.max(dataArray, function(d) {return d.weightedImpIndex}))
+	console.log('MIN MIN')
+	console.log(d3.min(dataArray, function(d) {return d.weightedImpIndex}))
+
+	var ascSortedData = _.sortBy(dataArray, function(anna){ return anna.weightedImpIndex; });
+	var sortedData = ascSortedData.reverse();
+	
+	var data = sortedData.splice(0,150);
+	console.log(data);
+	var dataLength = data.length;
+	console.log(dataLength);
+	/*
 	var data = originaldata.data.splice(0,150)
 	console.log(data)
-	dataLength = data.length;
+	var dataLength = data.length;
 	console.log(dataLength)
+	*/
 
 	if (dataLength > 100) {
 		height = 550;
